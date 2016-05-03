@@ -25,6 +25,20 @@ class Session
         }
     }
 
+    public function close()
+    {
+        $url = sprintf(
+            "/session/%s/close",
+            $this->id
+        );
+
+        $this->client->request(
+            "POST", $url
+        );
+
+        return $this;
+    }
+
     public static function create(Client $client)
     {
         $url = sprintf(

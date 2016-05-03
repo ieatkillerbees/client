@@ -18,15 +18,16 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $address = sprintf(
-            "http://%s:%s",
-            getenv("JASON_THE_PHANTOM_HOST"),
-            getenv("JASON_THE_PHANTOM_PORT")
-        );
+        $port = getenv("JASON_THE_PHANTOM_PORT");
 
-        if (!$address) {
-            $address = $this->getJasonAddress();
+        if (!$port) {
+            $port = $this->getJasonPort();
         }
+
+        $address = sprintf(
+            "http://localhost:%s",
+            $port
+        );
 
         if (!$this->exists($address)) {
             $path = getenv("JASON_THE_PHANTOM_PATH");
@@ -48,9 +49,9 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
             );
 
             exec($command, $output);
-            sleep(1);
-
             $this->pid = $output[0];
+
+            sleep(1);
         }
     }
 
@@ -66,6 +67,10 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        if ($this->session) {
+            $this->session->close();
+        }
+
         if ($this->pid) {
             $command = sprintf(
                 "kill %s",
@@ -80,15 +85,16 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
     protected function visit($address)
     {
-        $jasonAddress = sprintf(
-            "http://%s:%s",
-            getenv("JASON_THE_PHANTOM_HOST"),
-            getenv("JASON_THE_PHANTOM_PORT")
-        );
+        $port = getenv("JASON_THE_PHANTOM_PORT");
 
-        if (!$jasonAddress) {
-            $jasonAddress = $this->getJasonAddress();
+        if (!$port) {
+            $port = $this->getJasonPort();
         }
+
+        $jasonAddress = sprintf(
+            "http://localhost:%s",
+            $port
+        );
 
         if (!$this->client) {
             $this->client = $this->createClient($jasonAddress);
@@ -116,9 +122,9 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         return Page::create($client, $session);
     }
 
-    protected function getJasonAddress()
+    protected function getJasonPort()
     {
-        throw new BadMethodCallException("getJasonAddress not implemented");
+        throw new BadMethodCallException("getJasonPort not implemented");
     }
 
     protected function getBasePath()
