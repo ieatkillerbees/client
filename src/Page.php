@@ -39,8 +39,13 @@ class Page
 
     private function view()
     {
+        $url = sprintf(
+            "/session/%s/page/%s",
+            $this->session->id, $this->id
+        );
+
         $response = $this->client->request(
-            "GET", sprintf("http://localhost:4321/session/%s/page/%s", $this->session->id, $this->id)
+            "GET", $url
         );
 
         $json = json_decode(
@@ -52,8 +57,13 @@ class Page
 
     public function visit($address)
     {
+        $url = sprintf(
+            "/session/%s/page/%s/visit",
+            $this->session->id, $this->id
+        );
+
         $response = $this->client->request(
-            "POST", sprintf("http://localhost:4321/session/%s/page/%s/visit", $this->session->id, $this->id), [
+            "POST", $url, [
                 "form_params" => [
                     "address" => $address,
                 ],
@@ -65,8 +75,13 @@ class Page
 
     public function run($script)
     {
+        $url = sprintf(
+            "/session/%s/page/%s/run",
+            $this->session->id, $this->id
+        );
+
         $response = $this->client->request(
-            "POST", sprintf("http://localhost:4321/session/%s/page/%s/run", $this->session->id, $this->id), [
+            "POST", $url, [
                 "form_params" => [
                     "script" => $script,
                 ],
@@ -78,8 +93,13 @@ class Page
 
     public static function create(Client $client, Session $session)
     {
+        $url = sprintf(
+            "/session/%s/page",
+            $session->id
+        );
+
         $response = $client->request(
-            "POST", sprintf("http://localhost:4321/session/%s/page", $session->id)
+            "POST", $url
         );
 
         $json = json_decode(

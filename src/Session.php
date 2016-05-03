@@ -27,8 +27,12 @@ class Session
 
     public static function create(Client $client)
     {
+        $url = sprintf(
+            "/session"
+        );
+
         $response = $client->request(
-            "POST", "http://localhost:4321/session"
+            "POST", $url
         );
 
         $json = json_decode(
