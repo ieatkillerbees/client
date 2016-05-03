@@ -2,6 +2,7 @@
 
 namespace Jason;
 
+use BadMethodCallException;
 use GuzzleHttp\Client;
 use PHPUnit_Framework_TestCase;
 
@@ -17,10 +18,23 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $address = $this->getJasonAddress();
+        $address = sprintf(
+            "http://%s:%s",
+            getenv("JASON_THE_PHANTOM_HOST"),
+            getenv("JASON_THE_PHANTOM_PORT")
+        );
+
+        if (!$address) {
+            $address = $this->getJasonAddress();
+        }
 
         if (!$this->exists($address)) {
-            $path = $this->getBasePath();
+            $path = getenv("JASON_THE_PHANTOM_PATH");
+
+            if (!$path) {
+                $path = $this->getBasePath();
+            }
+
             $name = "jason-the-phantom";
 
             $script = sprintf(
@@ -66,7 +80,15 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
     protected function visit($address)
     {
-        $jasonAddress = $this->getJasonAddress();
+        $jasonAddress = sprintf(
+            "http://%s:%s",
+            getenv("JASON_THE_PHANTOM_HOST"),
+            getenv("JASON_THE_PHANTOM_PORT")
+        );
+
+        if (!$jasonAddress) {
+            $jasonAddress = $this->getJasonAddress();
+        }
 
         if (!$this->client) {
             $this->client = $this->createClient($jasonAddress);
@@ -94,7 +116,13 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         return Page::create($client, $session);
     }
 
-    abstract protected function getJasonAddress();
+    protected function getJasonAddress()
+    {
+        throw new BadMethodCallException("getJasonAddress not implemented");
+    }
 
-    abstract protected function getBasePath();
+    protected function getBasePath()
+    {
+        throw new BadMethodCallException("getBasePath not implemented");
+    }
 }
