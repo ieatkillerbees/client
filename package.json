@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "jason-the-phantom": "git+ssh://git@github.com/assertchris/jason-the-phantom.git"
+  }
+}
