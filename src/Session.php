@@ -18,11 +18,9 @@ class Session
         $this->id = $id;
     }
 
-    public function __get($property)
+    public function id()
     {
-        if ($property == "id") {
-            return $this->id;
-        }
+        return $this->id;
     }
 
     public function close()

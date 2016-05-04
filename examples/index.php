@@ -15,8 +15,8 @@ $page = Page::create($client, $session);
 print "body: " . $page
     ->visit("http://assertchris.io")
     ->run("document.write('hello world'); return 'success';")
-    ->body;
+    ->body();
 
 print "\n";
 
-print "returned: " . $page->returned;
+print "returned: " . $page->returned();

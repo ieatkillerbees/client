@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "edf2b560e70b50f28dde6d1d4efbb71a",
-    "content-hash": "05bb42b0d56d901c96d4fbd64023eb33",
+    "hash": "1cd49b2a813d177fe77e04b187d15c79",
+    "content-hash": "9369903d485815c27c31a99595a4a20f",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -238,7 +238,7 @@
             "dist": {
                 "type": "path",
                 "url": "../jason-the-phantom-phpunit",
-                "reference": "67bd4adeff8860c98feb0c55c927d0641e48d263",
+                "reference": "e7a80a0009d2fb845064a264ec473b5594788717",
                 "shasum": null
             },
             "require": {
