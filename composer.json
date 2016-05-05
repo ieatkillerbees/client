@@ -1,17 +1,24 @@
 {
-    "name": "jason-the-phantom/phpunit",
+    "name": "undemanding/client",
     "type": "composer-plugin",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/undemanding/difference"
+        }
+    ],
     "require": {
         "phpunit/phpunit": "^5.3",
         "guzzlehttp/guzzle": "^6.2",
-        "composer-plugin-api": "^1.0"
+        "composer-plugin-api": "^1.0",
+        "undemanding/difference": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Jason\\": "src"
+            "Undemanding\\Client\\": "src"
         }
     },
     "extra": {
-        "class": "Jason\\Plugin"
+        "class": "Undemanding\\Client\\Plugin"
     }
 }

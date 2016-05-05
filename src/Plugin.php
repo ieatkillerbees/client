@@ -1,6 +1,6 @@
 <?php
 
-namespace Jason;
+namespace Undemanding\Client;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;

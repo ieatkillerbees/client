@@ -1,50 +1,40 @@
 <?php
 
-namespace Jason;
+namespace Undemanding\Client;
 
 use GuzzleHttp\Client;
 
 class Session
 {
+    /**
+     * @var Client
+     */
     private $client;
 
-    private $session;
-
+    /**
+     * @var int
+     */
     private $id;
 
+    /**
+     * @param Client $client
+     * @param int $id
+     */
     public function __construct(Client $client, $id)
     {
         $this->client = $client;
         $this->id = $id;
     }
 
-    public function id()
-    {
-        return $this->id;
-    }
-
-    public function close()
-    {
-        $url = sprintf(
-            "/session/%s/close",
-            $this->id
-        );
-
-        $this->client->request(
-            "POST", $url
-        );
-
-        return $this;
-    }
-
+    /**
+     * @param Client $client
+     *
+     * @return Session
+     */
     public static function create(Client $client)
     {
-        $url = sprintf(
-            "/session"
-        );
-
         $response = $client->request(
-            "POST", $url
+            "POST", "/session"
         );
 
         $json = json_decode(
@@ -52,5 +42,25 @@ class Session
         );
 
         return new static($client, $json->session->id);
+    }
+
+    /**
+     * @return int
+     */
+    public function id()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return $this
+     */
+    public function close()
+    {
+        $this->client->request(
+            "POST", "/session/" . $this->id . "/close"
+        );
+
+        return $this;
     }
 }

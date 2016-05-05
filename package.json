@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "jason-the-phantom": "git+ssh://git@github.com/assertchris/jason-the-phantom.git"
+    "undemanding-server": "git+ssh://git@github.com/undemanding/server.git"
   }
 }

@@ -2,11 +2,10 @@
 
 require __DIR__ . "/../vendor/autoload.php";
 
-use GuzzleHttp\Client;
-use Jason\Session;
-use Jason\Page;
+use Undemanding\Client\Session;
+use Undemanding\Client\Page;
 
-$client = new Client(["base_uri" => "http://localhost:4321"]);
+$client = new GuzzleHttp\Client(["base_uri" => "http://localhost:4321"]);
 
 $session = Session::create($client);
 
