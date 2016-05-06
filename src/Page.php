@@ -4,6 +4,7 @@ namespace Undemanding\Client;
 
 use GuzzleHttp\Client;
 use InvalidArgumentException;
+use PHPUnit_Framework_ExpectationFailedException;
 
 class Page
 {
@@ -21,6 +22,11 @@ class Page
      * @var int
      */
     private $id;
+
+    /**
+     * @var int
+     */
+    private $eventId = 1;
 
     /**
      * @param Client $client
@@ -339,5 +345,82 @@ class Page
         );
 
         return $json->data;
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @return $this
+     *
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
+    public function see($expected)
+    {
+        $body = $this->body();
+
+        if (strpos($body, $expected) === false) {
+            throw new PHPUnit_Framework_ExpectationFailedException("'" . $expected . "' not found");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @return $this
+     *
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
+    public function doNotSee($expected)
+    {
+        $body = $this->body();
+
+        if (strpos($body, $expected) !== false) {
+            throw new PHPUnit_Framework_ExpectationFailedException("'" . $expected . "' found");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $selector
+     *
+     * @return $this
+     */
+    public function click($selector)
+    {
+        $nextId = $this->eventId++;
+
+        $this->run("
+            var event" . $nextId . " = document.createEvent('MouseEvent');
+
+            event" . $nextId . ".initMouseEvent(
+                'click',
+                true /* bubbles */,
+                true /* cancelable */,
+                window
+            );
+
+            var element" . $nextId . " = document.querySelector('" . $selector . "');
+
+            element" . $nextId . ".dispatchEvent(event" . $nextId . ");
+        ");
+
+        return $this;
+    }
+
+    public function preview()
+    {
+        $name = "/tmp/" . time() . ".png";
+
+        $data = $this->capture();
+        file_put_contents($name, base64_decode($data));
+
+        @exec("/usr/bin/qlmanage -p " . $name . " 2> /dev/null");
+
+        unlink($name);
+
+        return $this;
     }
 }
